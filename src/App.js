@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import anime from 'animejs/lib/anime.es.js';
 import { Center, Button, Text, Input, Flex, Select} from "@chakra-ui/react";
 import {
   NumberInput,
@@ -10,21 +11,24 @@ import {
 } from '@chakra-ui/react'
 
 import { ChevronDownIcon  } from '@chakra-ui/icons'
+import { animationControls } from 'framer-motion';
+
+import {caesarCipher} from "./ciphers/caesar"
+import { vigenereCipher } from "./ciphers/vigenere"
 
 let toEncrypt="";
-let alphaPos=[];
 const alphabet="abcdefghijklmnopqrstuvwxyz";
+let finalEncrypted="";
 
 function App() {
   return (
     <>
       <Flex>
-        <Input placeholder='What do you want to encrypt?' id="encryptVal" isDisabled={false}/>
+        <Input placeholder='What do you want to encrypt?' id="encryptVal"/>
 
         <Select placeholder='Select Cipher' id="cipher">
           <option value='Caesar Cipher'>Caesar Cipher</option>
-          <option value='Grille'>Grille</option>
-          <option value='Morbit'>Morbit</option>
+          <option value='Vigenere'>Vigenère</option>
         </Select>
 
 
@@ -37,10 +41,27 @@ function App() {
         </NumberInput>
       </Flex>
       
-        
+      
 
-      <Button colorScheme='blue' onClick={encrypt}>Encrypt</Button>
-      <Flex w={"100%"} className={"alpha"} position={"absolute"} top={"20vh"} justify={"center"}>
+      <Button colorScheme='blue' id="encryptBtn" onClick={encrypt}>Encrypt</Button>
+
+      <Flex w={"100%"} id="maintext" justify={"center"}>
+        
+        <Text fontSize={"5xl"}>E</Text>
+        <Text fontSize={"5xl"}>n</Text>
+        <Text fontSize={"5xl"}>c</Text>
+        <Text fontSize={"5xl"}>r</Text>
+        <Text fontSize={"5xl"}>y</Text>
+        <Text fontSize={"5xl"}>p</Text>
+        <Text fontSize={"5xl"}>t</Text>
+        <Text fontSize={"5xl"}>a</Text>
+        <Text fontSize={"5xl"}>b</Text>
+        <Text fontSize={"5xl"}>l</Text>
+        <Text fontSize={"5xl"}>e</Text>
+      </Flex>
+
+      <Flex w={"100%"} className={"alpha"} position={"relative"} top={"60px"} justify={"center"}>
+        <div id="double-arrow"></div>
         <Text className={"oldAlphaLetter"}>a</Text>
         <Text className={"oldAlphaLetter"}>b</Text>
         <Text className={"oldAlphaLetter"}>c</Text>
@@ -69,117 +90,78 @@ function App() {
         <Text className={"oldAlphaLetter"}>z</Text>
 
       </Flex>
-      <Flex w={"100%"} id={"alpha"} className={"alpha"} position={"absolute"} top={"20vh"} justify={"center"}>
-      <Text className={"alphaLetter"}>a</Text>
-        <Text className={"alphaLetter"}>b</Text>
-        <Text className={"alphaLetter"}>c</Text>
-        <Text className={"alphaLetter"}>d</Text>
-        <Text className={"alphaLetter"}>e</Text>
-        <Text className={"alphaLetter"}>f</Text>
-        <Text className={"alphaLetter"}>g</Text>
-        <Text className={"alphaLetter"}>h</Text>
-        <Text className={"alphaLetter"}>i</Text>
-        <Text className={"alphaLetter"}>j</Text>
-        <Text className={"alphaLetter"}>k</Text>
-        <Text className={"alphaLetter"}>l</Text>
-        <Text className={"alphaLetter"}>m</Text>
-        <Text className={"alphaLetter"}>n</Text>
-        <Text className={"alphaLetter"}>o</Text>
-        <Text className={"alphaLetter"}>p</Text>
-        <Text className={"alphaLetter"}>q</Text>
-        <Text className={"alphaLetter"}>r</Text>
-        <Text className={"alphaLetter"}>s</Text>
-        <Text className={"alphaLetter"}>t</Text>
-        <Text className={"alphaLetter"}>u</Text>
-        <Text className={"alphaLetter"}>v</Text>
-        <Text className={"alphaLetter"}>w</Text>
-        <Text className={"alphaLetter"}>x</Text>
-        <Text className={"alphaLetter"}>y</Text>
-        <Text className={"alphaLetter"}>z</Text>
-      </Flex>
 
-      <Flex w={"100%"} id="maintext" position={"absolute"} top={"40vh"} justify={"center"}>
-        <Text fontSize={"5xl"}>E</Text>
-        <Text fontSize={"5xl"}>n</Text>
-        <Text fontSize={"5xl"}>c</Text>
-        <Text fontSize={"5xl"}>r</Text>
-        <Text fontSize={"5xl"}>y</Text>
-        <Text fontSize={"5xl"}>p</Text>
-        <Text fontSize={"5xl"}>t</Text>
-        <Text fontSize={"5xl"}>a</Text>
-        <Text fontSize={"5xl"}>b</Text>
-        <Text fontSize={"5xl"}>l</Text>
-        <Text fontSize={"5xl"}>e</Text>
+      <Flex w={"100%"} id={"alpha"} className={"alpha"} position={"relative"} top={"-10px"} justify={"center"}>
+        <Text className={"alphaLetter"} id={"a"}>a</Text>
+        <Text className={"alphaLetter"} id={"b"}>b</Text>
+        <Text className={"alphaLetter"} id={"c"}>c</Text>
+        <Text className={"alphaLetter"} id={"d"}>d</Text>
+        <Text className={"alphaLetter"} id={"e"}>e</Text>
+        <Text className={"alphaLetter"} id={"f"}>f</Text>
+        <Text className={"alphaLetter"} id={"g"}>g</Text>
+        <Text className={"alphaLetter"} id={"h"}>h</Text>
+        <Text className={"alphaLetter"} id={"i"}>i</Text>
+        <Text className={"alphaLetter"} id={"j"}>j</Text>
+        <Text className={"alphaLetter"} id={"k"}>k</Text>
+        <Text className={"alphaLetter"} id={"l"}>l</Text>
+        <Text className={"alphaLetter"} id={"m"}>m</Text>
+        <Text className={"alphaLetter"} id={"n"}>n</Text>
+        <Text className={"alphaLetter"} id={"o"}>o</Text>
+        <Text className={"alphaLetter"} id={"p"}>p</Text>
+        <Text className={"alphaLetter"} id={"q"}>q</Text>
+        <Text className={"alphaLetter"} id={"r"}>r</Text>
+        <Text className={"alphaLetter"} id={"s"}>s</Text>
+        <Text className={"alphaLetter"} id={"t"}>t</Text>
+        <Text className={"alphaLetter"} id={"u"}>u</Text>
+        <Text className={"alphaLetter"} id={"v"}>v</Text>
+        <Text className={"alphaLetter"} id={"w"}>w</Text>
+        <Text className={"alphaLetter"} id={"x"}>x</Text>
+        <Text className={"alphaLetter"} id={"y"}>y</Text>
+        <Text className={"alphaLetter"} id={"z"}>z</Text>
       </Flex>
+      <Center id="resultText" width={"100%"} top={500} position="absolute">
 
+      </Center>   
     </>
   );
 }
 
-function encrypt(){
-  addText();
-  const cipher = document.getElementById("cipher").value;
-  if (cipher=="Caesar Cipher"){
-    caesarCipher();
-  }else if (cipher=="Grille"){
 
-  }
-}
-
-//Animates the letters of the alphabet
-function moveAlphabet(shift){
-
-  const oldLetters = document.getElementsByClassName("oldAlphaLetter");
-  const xLocations=[];
-  for (let i=0; i<oldLetters.length; i++){
-    var rect=oldLetters[i].getBoundingClientRect();
-    xLocations.push(rect.left);
-  }
-
+//Gets the x locations of each letter
+const xLocations=[];
+document.addEventListener('DOMContentLoaded', (event) => {
   
-  const letters=document.getElementsByClassName("alphaLetter");
-  for (let i=0; i<letters.length; i++){
-    /*console.log(i+Number(shift));
-    console.log(xLocations[(i+Number(shift))%26]);
-    console.log( letters[i].getBoundingClientRect().left);*/
-    let xLoc = xLocations[(i+Number(shift))%26] -  letters[i].getBoundingClientRect().left;
-   //console.log(xLoc);
-    letters[i].animate([
-      {transform: `translateX(${xLoc}px) translateY(45px)`}
-      
-    ],{
-      duration: 1000,
-      fill: 'forwards'
-    })
+  const oldLetters = document.getElementsByClassName("oldAlphaLetter");
+  for (let i=0; i<oldLetters.length; i++){
+    xLocations.push(oldLetters[i].getBoundingClientRect().left);
+  }
+})
+
+export { xLocations };
+
+//Calls the correct encryption cipher
+function encrypt(){
+  const cipher = document.getElementById("cipher").value;
+  toEncrypt = document.getElementById("encryptVal").value;
+
+  addText();
+
+  if (cipher=="Caesar Cipher"){
+    caesarCipher(toEncrypt);
+  }else if (cipher=="Vigenere"){
+    vigenereCipher(toEncrypt);
   }
 }
 
-function createNewAlphabet(){
-  const alpha = document.getElementById("alpha");
-  const toRemove = document.getElementsByClassName("alphaLetter");
-  for (let i=0; i<toRemove.length; i++){
-    toRemove[i].className="alphaLetter";
-  }
-  /*
-  for (let i=0; i<toRemove.length; i++){
-    document.getElementById(toRemove[i].id).remove();
-  }
 
-  for (let i=0; i<alphabet.length; i++){
-    const newLetter = document.createElement("p");
-    newLetter.id=alphabet.substring(i, i+1);
-    newLetter.className="alphaLetter";
-    newLetter.innerHTML=alphabet.substring(i, i+1);
-    alpha.appendChild(newLetter);
-  }*/
-}
-
+//Adds the text that is going to be encrypted onto the screen
 function addText(){
   const text = document.getElementById("encryptVal").value;
   
-  if (document.getElementById("encryptVal").isDisabled || text.length<=0){
+  if (text.length<=0){
     return;
   }
+
   const centerText = document.getElementById("maintext");
   centerText.innerHTML="";
   for (let i=0; i<text.length; i++){
@@ -190,43 +172,13 @@ function addText(){
 
     //Adding text to the center of the screen
     const toAdd=document.createElement("p");
+    toAdd.id = i;
     toAdd.append(document.createTextNode(newLetter));
     toAdd.classList.add("letter");
 
     centerText.appendChild(toAdd);
   }
-
-  //Disables the input field
-  document.getElementById("encryptVal").isDisabled=false;
 }
 
-
-function caesarCipher(){
-
-  let encryptedText="";
-
-  //Creates a new alphabet
-  let shift = document.getElementById("step").value;
-  if (shift<0){
-    shift=26+Number(shift);
-  }
-  const newAlphabet= alphabet.substring(shift) + alphabet.substring(0, shift);
-  createNewAlphabet();
-  //moveAlphabet(shift);
-
-  for (let i=0; i<toEncrypt.length; i++){
-    if (toEncrypt[i]==" "){
-      encryptedText+=" ";
-    }
-
-     let index = alphabet.indexOf(toEncrypt[i].toLowerCase());
-
-     let toAdd=newAlphabet.substring(index, index+1);
-     if (toEncrypt[i]==toEncrypt[i].toUpperCase()){
-       toAdd=toAdd.toUpperCase();
-     }
-     encryptedText+=toAdd;
-  }
-}
 
 export default App;
