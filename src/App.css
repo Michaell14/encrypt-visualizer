@@ -24,11 +24,24 @@
 .alpha{
     letter-spacing: 18px;
 }
+
 p{
     font-size: 46px;
-
     letter-spacing: 14px;
     margin-top: 0px;
+}
+
+#grid p, #topgrid p, #leftgrid p{
+    font-size: 20px;
+    letter-spacing: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+}
+
+#grid p:nth-child(odd), #leftgrid p:nth-child(odd), #topgrid p:nth-child(odd){
+    background-color: #424353;
 }
 
 /* --------------------------------------------  */

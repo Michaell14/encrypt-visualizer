@@ -7,20 +7,23 @@ const alphabet="abcdefghijklmnopqrstuvwxyz";
 let toEncrypt="";
 let underline=true;
 
+
+
 //****CAESAR CIPHER****
 export function caesarCipher(encrypt){
-    toEncrypt=encrypt;
-    clearText();
-    //Creates a new alphabet
-    shift = document.getElementById("step").value;
-    if (shift<0){
-      shift=26+Number(shift);
-    }
-    finalEncrypted=getEncryptedText();
-    moveAlphabet();
-    animateArrowAndUnderline();
-    clearUnderline();
+
+  toEncrypt=encrypt;
+  clearText();
+  //Creates a new alphabet
+  shift = document.getElementById("step").value;
+  if (shift<0){
+    shift=26+Number(shift);
   }
+  finalEncrypted=getEncryptedText();
+  moveAlphabet();
+  animateArrowAndUnderline();
+  clearUnderline();
+}
 
 //Calculates the encrypted text
 function getEncryptedText(){
@@ -109,7 +112,7 @@ function moveArrow(i){
 
     toAdd.append(document.createTextNode(finalEncrypted.substring(i, i+1)));
 
-    document.getElementById("resultText").appendChild(toAdd);
+    document.getElementById("caesarResult").appendChild(toAdd);
 
   }
 }

@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import anime from 'animejs/lib/anime.es.js';
-import { Center, Button, Text, Input, Flex, Select} from "@chakra-ui/react";
+import { Center, Button, Text, Input, Flex, Select, Grid, GridItem, Box } from "@chakra-ui/react";
 import {
   NumberInput,
   NumberInputField,
@@ -19,32 +19,26 @@ import { vigenereCipher } from "./ciphers/vigenere"
 let toEncrypt="";
 const alphabet="abcdefghijklmnopqrstuvwxyz";
 let finalEncrypted="";
+let currCipher="";
 
 function App() {
   return (
     <>
-      <Flex>
-        <Input placeholder='What do you want to encrypt?' id="encryptVal"/>
-
-        <Select placeholder='Select Cipher' id="cipher">
+      <Flex mt={10} justify={"center"}>
+      
+        <Select placeholder='Select Cipher' id="cipher" onChange={changeCipher} w={"150px"}>
           <option value='Caesar Cipher'>Caesar Cipher</option>
           <option value='Vigenere'>Vigenère</option>
         </Select>
 
-
         <NumberInput size='md' maxW={24} defaultValue={0} max={26} min={-26}>
-          <NumberInputField id="step"/>
+          <NumberInputField/>
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
       </Flex>
-      
-      
-
-      <Button colorScheme='blue' id="encryptBtn" onClick={encrypt}>Encrypt</Button>
-
       <Flex w={"100%"} id="maintext" justify={"center"}>
         
         <Text fontSize={"5xl"}>E</Text>
@@ -60,68 +54,92 @@ function App() {
         <Text fontSize={"5xl"}>e</Text>
       </Flex>
 
-      <Flex w={"100%"} className={"alpha"} position={"relative"} top={"60px"} justify={"center"}>
-        <div id="double-arrow"></div>
-        <Text className={"oldAlphaLetter"}>a</Text>
-        <Text className={"oldAlphaLetter"}>b</Text>
-        <Text className={"oldAlphaLetter"}>c</Text>
-        <Text className={"oldAlphaLetter"}>d</Text>
-        <Text className={"oldAlphaLetter"}>e</Text>
-        <Text className={"oldAlphaLetter"}>f</Text>
-        <Text className={"oldAlphaLetter"}>g</Text>
-        <Text className={"oldAlphaLetter"}>h</Text>
-        <Text className={"oldAlphaLetter"}>i</Text>
-        <Text className={"oldAlphaLetter"}>j</Text>
-        <Text className={"oldAlphaLetter"}>k</Text>
-        <Text className={"oldAlphaLetter"}>l</Text>
-        <Text className={"oldAlphaLetter"}>m</Text>
-        <Text className={"oldAlphaLetter"}>n</Text>
-        <Text className={"oldAlphaLetter"}>o</Text>
-        <Text className={"oldAlphaLetter"}>p</Text>
-        <Text className={"oldAlphaLetter"}>q</Text>
-        <Text className={"oldAlphaLetter"}>r</Text>
-        <Text className={"oldAlphaLetter"}>s</Text>
-        <Text className={"oldAlphaLetter"}>t</Text>
-        <Text className={"oldAlphaLetter"}>u</Text>
-        <Text className={"oldAlphaLetter"}>v</Text>
-        <Text className={"oldAlphaLetter"}>w</Text>
-        <Text className={"oldAlphaLetter"}>x</Text>
-        <Text className={"oldAlphaLetter"}>y</Text>
-        <Text className={"oldAlphaLetter"}>z</Text>
 
-      </Flex>
 
-      <Flex w={"100%"} id={"alpha"} className={"alpha"} position={"relative"} top={"-10px"} justify={"center"}>
-        <Text className={"alphaLetter"} id={"a"}>a</Text>
-        <Text className={"alphaLetter"} id={"b"}>b</Text>
-        <Text className={"alphaLetter"} id={"c"}>c</Text>
-        <Text className={"alphaLetter"} id={"d"}>d</Text>
-        <Text className={"alphaLetter"} id={"e"}>e</Text>
-        <Text className={"alphaLetter"} id={"f"}>f</Text>
-        <Text className={"alphaLetter"} id={"g"}>g</Text>
-        <Text className={"alphaLetter"} id={"h"}>h</Text>
-        <Text className={"alphaLetter"} id={"i"}>i</Text>
-        <Text className={"alphaLetter"} id={"j"}>j</Text>
-        <Text className={"alphaLetter"} id={"k"}>k</Text>
-        <Text className={"alphaLetter"} id={"l"}>l</Text>
-        <Text className={"alphaLetter"} id={"m"}>m</Text>
-        <Text className={"alphaLetter"} id={"n"}>n</Text>
-        <Text className={"alphaLetter"} id={"o"}>o</Text>
-        <Text className={"alphaLetter"} id={"p"}>p</Text>
-        <Text className={"alphaLetter"} id={"q"}>q</Text>
-        <Text className={"alphaLetter"} id={"r"}>r</Text>
-        <Text className={"alphaLetter"} id={"s"}>s</Text>
-        <Text className={"alphaLetter"} id={"t"}>t</Text>
-        <Text className={"alphaLetter"} id={"u"}>u</Text>
-        <Text className={"alphaLetter"} id={"v"}>v</Text>
-        <Text className={"alphaLetter"} id={"w"}>w</Text>
-        <Text className={"alphaLetter"} id={"x"}>x</Text>
-        <Text className={"alphaLetter"} id={"y"}>y</Text>
-        <Text className={"alphaLetter"} id={"z"}>z</Text>
-      </Flex>
-      <Center id="resultText" width={"100%"} top={500} position="absolute">
+      <Box opacity={0} height={0} id="Caesar">
+        <Flex w={"100%"} className={"alpha"} position={"relative"} top={"60px"} justify={"center"}>
+          <div id="double-arrow"></div>
+          <Text className={"oldAlphaLetter"}>a</Text>
+          <Text className={"oldAlphaLetter"}>b</Text>
+          <Text className={"oldAlphaLetter"}>c</Text>
+          <Text className={"oldAlphaLetter"}>d</Text>
+          <Text className={"oldAlphaLetter"}>e</Text>
+          <Text className={"oldAlphaLetter"}>f</Text>
+          <Text className={"oldAlphaLetter"}>g</Text>
+          <Text className={"oldAlphaLetter"}>h</Text>
+          <Text className={"oldAlphaLetter"}>i</Text>
+          <Text className={"oldAlphaLetter"}>j</Text>
+          <Text className={"oldAlphaLetter"}>k</Text>
+          <Text className={"oldAlphaLetter"}>l</Text>
+          <Text className={"oldAlphaLetter"}>m</Text>
+          <Text className={"oldAlphaLetter"}>n</Text>
+          <Text className={"oldAlphaLetter"}>o</Text>
+          <Text className={"oldAlphaLetter"}>p</Text>
+          <Text className={"oldAlphaLetter"}>q</Text>
+          <Text className={"oldAlphaLetter"}>r</Text>
+          <Text className={"oldAlphaLetter"}>s</Text>
+          <Text className={"oldAlphaLetter"}>t</Text>
+          <Text className={"oldAlphaLetter"}>u</Text>
+          <Text className={"oldAlphaLetter"}>v</Text>
+          <Text className={"oldAlphaLetter"}>w</Text>
+          <Text className={"oldAlphaLetter"}>x</Text>
+          <Text className={"oldAlphaLetter"}>y</Text>
+          <Text className={"oldAlphaLetter"}>z</Text>
 
-      </Center>   
+        </Flex>
+        <Flex w={"100%"} id={"alpha"} className={"alpha"} position={"relative"} top={"-10px"} justify={"center"}>
+          <Text align={"center"} className={"alphaLetter"} id={"a"}>a</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"b"}>b</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"c"}>c</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"d"}>d</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"e"}>e</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"f"}>f</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"g"}>g</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"h"}>h</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"i"}>i</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"j"}>j</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"k"}>k</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"l"}>l</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"m"}>m</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"n"}>n</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"o"}>o</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"p"}>p</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"q"}>q</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"r"}>r</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"s"}>s</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"t"}>t</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"u"}>u</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"v"}>v</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"w"}>w</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"x"}>x</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"y"}>y</Text>
+          <Text align={"center"} className={"alphaLetter"} id={"z"}>z</Text>
+        </Flex>
+        
+      </Box>
+      <Center id="finalEncrypted"></Center>
+    <Box>
+      
+      <Flex mx={10} justify="space-around" mt={20} >
+        
+        <Center position={"relative"} width={"100%"}  id="Vigenere" opacity={0} height={"0%"}>
+          
+          <Flex>
+            <Grid templateRows="repeat(26, 24px)" templateColumns="repeat(1, 28px)" id="leftgrid"  mr={5}></Grid>
+            <Box>
+              <Grid templateColumns="repeat(26, 28px)"  templateRows="repeat(1, 26px)" id="topgrid" position="absolute" top={"-50px"}></Grid>
+              <Grid justify={"center"} templateRows="repeat(26, 24px)" templateColumns="repeat(26, 28px)" id="grid"></Grid>
+            </Box>
+          </Flex>
+          
+          </Center>
+          <Box>
+            <Input placeholder='Enter Key' id="vigenereKey"/>
+            <Input placeholder='What do you want to encrypt?' id="encryptVal"/>
+            <Button colorScheme='blue' id="encryptBtn" onClick={encrypt}>Encrypt</Button>
+          </Box> 
+        </Flex>
+    </Box>
     </>
   );
 }
@@ -139,6 +157,67 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 export { xLocations };
 
+function changeCipher(){
+  const val = document.getElementById("cipher").value;
+  if (val=="Caesar Cipher"){
+    if (currCipher!="Caesar Cipher"){
+      vigenereHide();
+      caesarStart();
+      
+      return;
+    }
+  }else if (val=="Vigenere"){
+    if (currCipher!="Vigenere"){
+      caesarHide();
+      vigenereStart();
+      
+      return;
+    }
+  }
+  vigenereHide();
+  caesarHide();
+}
+
+function caesarStart(){
+  anime({
+    targets: '#Caesar',
+    translateY: [0, 10],
+    opacity: 1,
+    height: "100%",
+    easing: 'easeInOutQuad'
+  });
+};
+
+function caesarHide(){
+  anime({
+    targets: "#Caesar",
+    translateY: [0, -10],
+    opacity: 0,
+    height: "0",
+    easing:"easeInOutQuad"
+  })
+}
+
+function vigenereStart(){
+  anime({
+    targets: "#Vigenere",
+    translateY: [0, 10],
+    opacity: 1,
+    height: "100%",
+    easing: "easeInOutQuad"
+  })
+}
+
+function vigenereHide(){
+  anime({
+    targets: "#Vigenere",
+    translateY: [0,-10],
+    opacity: 0,
+    height: "0",
+    easing: "easeInOutQuad"
+  })
+}
+
 //Calls the correct encryption cipher
 function encrypt(){
   const cipher = document.getElementById("cipher").value;
@@ -147,8 +226,15 @@ function encrypt(){
   addText();
 
   if (cipher=="Caesar Cipher"){
+    /*
+    if (currCipher!="Caesar Cipher"){
+      caesarStart();
+    }*/
+
+    currCipher="Caesar Cipher";
     caesarCipher(toEncrypt);
   }else if (cipher=="Vigenere"){
+    currCipher = "Vigenere";
     vigenereCipher(toEncrypt);
   }
 }
