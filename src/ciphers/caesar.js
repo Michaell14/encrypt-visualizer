@@ -112,7 +112,7 @@ function moveArrow(i){
 
     toAdd.append(document.createTextNode(finalEncrypted.substring(i, i+1)));
 
-    document.getElementById("caesarResult").appendChild(toAdd);
+    document.getElementById("encryptedResult").appendChild(toAdd);
 
   }
 }

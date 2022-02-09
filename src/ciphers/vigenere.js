@@ -183,8 +183,9 @@ function addText(index){
     if (index>=toEncrypt.length){
         return;
     }
-    const parent= document.getElementById("finalEncrypted");
+    const parent= document.getElementById("encryptedResult");
     const toAdd=document.createElement("p");
+    toAdd.className = "finalEncrypted";
     toAdd.appendChild(document.createTextNode(finalEncrypted.substring(index, index+1)));
     parent.appendChild(toAdd);
     setTimeout(() => {
@@ -197,7 +198,7 @@ function addText(index){
 
 //Clears the previous encrypted result
 function clearText(){
-    let toRemove = document.getElementById("finalEncrypted");
+    let toRemove = document.getElementsByClassName("finalEncrypted");
     for (let i=toRemove.length-1; i>=0 ;i--){
       toRemove[i].remove();
     }

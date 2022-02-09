@@ -32,7 +32,7 @@ function App() {
         </Select>
 
         <NumberInput size='md' maxW={24} defaultValue={0} max={26} min={-26}>
-          <NumberInputField/>
+          <NumberInputField id="step"/>
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
@@ -56,7 +56,7 @@ function App() {
 
 
 
-      <Box opacity={0} height={0} id="Caesar">
+      <Box opacity={0} height={0} id="Caesar" position="absolute" mx={"auto"} w={"90vw"}>
         <Flex w={"100%"} className={"alpha"} position={"relative"} top={"60px"} justify={"center"}>
           <div id="double-arrow"></div>
           <Text className={"oldAlphaLetter"}>a</Text>
@@ -117,14 +117,13 @@ function App() {
         </Flex>
         
       </Box>
-      <Center id="finalEncrypted"></Center>
-    <Box>
+      <Center id="encryptedResult"></Center>
       
-      <Flex mx={10} justify="space-around" mt={20} >
+      <Flex mx={10} justify="space-around" mt={20}>
         
-        <Center position={"relative"} width={"100%"}  id="Vigenere" opacity={0} height={"0%"}>
+        <Center position={"relative"} width={"100%"}  id="Vigenere" opacity={0}>
           
-          <Flex>
+          <Flex h={0}>
             <Grid templateRows="repeat(26, 24px)" templateColumns="repeat(1, 28px)" id="leftgrid"  mr={5}></Grid>
             <Box>
               <Grid templateColumns="repeat(26, 28px)"  templateRows="repeat(1, 26px)" id="topgrid" position="absolute" top={"-50px"}></Grid>
@@ -139,7 +138,6 @@ function App() {
             <Button colorScheme='blue' id="encryptBtn" onClick={encrypt}>Encrypt</Button>
           </Box> 
         </Flex>
-    </Box>
     </>
   );
 }
@@ -181,7 +179,7 @@ function changeCipher(){
 function caesarStart(){
   anime({
     targets: '#Caesar',
-    translateY: [0, 10],
+    translateY: 10,
     opacity: 1,
     height: "100%",
     easing: 'easeInOutQuad'
@@ -191,9 +189,9 @@ function caesarStart(){
 function caesarHide(){
   anime({
     targets: "#Caesar",
-    translateY: [0, -10],
+    translateY: -10,
     opacity: 0,
-    height: "0",
+    height: 0,
     easing:"easeInOutQuad"
   })
 }
@@ -201,7 +199,7 @@ function caesarHide(){
 function vigenereStart(){
   anime({
     targets: "#Vigenere",
-    translateY: [0, 10],
+    translateY: 10,
     opacity: 1,
     height: "100%",
     easing: "easeInOutQuad"
@@ -211,9 +209,9 @@ function vigenereStart(){
 function vigenereHide(){
   anime({
     targets: "#Vigenere",
-    translateY: [0,-10],
+    translateY: -10,
     opacity: 0,
-    height: "0",
+    height: 0,
     easing: "easeInOutQuad"
   })
 }
