@@ -108,41 +108,43 @@ function App() {
           <Text align={"center"} className={"alphaLetter"} id={"y"}>y</Text>
           <Text align={"center"} className={"alphaLetter"} id={"z"}>z</Text>
         </Flex>
-        <Box bottom={"-300px"} position="absolute">
-            <Input placeholder='What do you want to encrypt?' id="encryptValCaesar"/>
+        <Flex mt={"150px"} w={"100%"} direction={"column"} align={"center"}>
+            
 
-            <NumberInput size='md' maxW={24} defaultValue={0} max={26} min={-26}>
-              <NumberInputField id="step"/>
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
+            <Flex direction={"row"}>
+              <Input placeholder='What do you want to encrypt?' id="encryptValCaesar" w={"600px"} maxW={"600px"}/>
+              <NumberInput size='md' maxW={24} defaultValue={0} max={26} min={-26}>
+                <NumberInputField id="step"/>
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </Flex>
 
-            <Button colorScheme='green' onClick={encrypt}>Encrypt</Button>
-          </Box> 
+            <Button colorScheme='green' w={"80px"} onClick={encrypt} top={5}>Encrypt</Button>
+          </Flex> 
       </Box>
-      <Center id="encryptedResult"></Center>
+      <Center id="encryptedResult" w={"100%"} position={"absolute"}></Center>
       
-      <Flex mx={10} justify="space-around" visibility={"hidden"} id="Vigenere" opacity={0} h={0}>
+      <Flex mx={10} justify="space-around" visibility={"hidden"} id="Vigenere" position={"relative"} opacity={0} mt={"120px"}>
         
-        <Center position={"relative"} width={"100%"}>
           
-          <Flex h={0}>
-            <Grid templateRows="repeat(26, 24px)" templateColumns="repeat(1, 28px)" id="leftgrid"  mr={5}></Grid>
-            <Box>
-              <Grid templateColumns="repeat(26, 28px)"  templateRows="repeat(1, 26px)" id="topgrid" position="absolute"></Grid>
-              <Grid justify={"center"} templateRows="repeat(26, 24px)" templateColumns="repeat(26, 28px)" id="grid"></Grid>
-            </Box>
-          </Flex>
-          
-          </Center>
-          <Center w={"90vw"}>
-            <Input placeholder='Enter Key' id="vigenereKey"/>
-            <Input placeholder='What do you want to encrypt?' id="encryptValVigenere"/>
-            <Button colorScheme='green' onClick={encrypt}>Encrypt</Button>
-          </Center> 
+        <Flex h={0}>
+          <Grid templateRows="repeat(26, 24px)" templateColumns="repeat(1, 28px)" id="leftgrid"  mr={5}></Grid>
+          <Box>
+            <Grid templateColumns="repeat(26, 28px)"  templateRows="repeat(1, 26px)" id="topgrid" bottom={"140px"} position="absolute"></Grid>
+            <Grid justify={"center"} templateRows="repeat(26, 24px)" templateColumns="repeat(26, 28px)" id="grid"></Grid>
+          </Box>
         </Flex>
+
+
+        <Flex w={"20vw"} direction="column">
+          <Input placeholder='Enter Key' id="vigenereKey"/>
+          <Input placeholder='What do you want to encrypt?' id="encryptValVigenere"/>
+          <Button colorScheme='green' onClick={encrypt}>Encrypt</Button>
+        </Flex> 
+      </Flex>
     </>
   );
 }
@@ -238,7 +240,7 @@ function encrypt(){
     currCipher="Caesar Cipher";
     caesarCipher(text);
   }else if (cipher=="Vigenere"){
-    text=document.getElementById("encryptValCaesar").value;
+    text=document.getElementById("encryptValVigenere").value;
     addText(text);
 
     currCipher = "Vigenere";
