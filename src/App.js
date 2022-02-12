@@ -31,13 +31,6 @@ function App() {
           <option value='Vigenere'>Vigenère</option>
         </Select>
 
-        <NumberInput size='md' maxW={24} defaultValue={0} max={26} min={-26}>
-          <NumberInputField id="step"/>
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
       </Flex>
       <Flex w={"100%"} id="maintext" justify={"center"}>
         
@@ -115,28 +108,40 @@ function App() {
           <Text align={"center"} className={"alphaLetter"} id={"y"}>y</Text>
           <Text align={"center"} className={"alphaLetter"} id={"z"}>z</Text>
         </Flex>
-        
+        <Box bottom={"-300px"} position="absolute">
+            <Input placeholder='What do you want to encrypt?' id="encryptValCaesar"/>
+
+            <NumberInput size='md' maxW={24} defaultValue={0} max={26} min={-26}>
+              <NumberInputField id="step"/>
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+
+            <Button colorScheme='green' onClick={encrypt}>Encrypt</Button>
+          </Box> 
       </Box>
       <Center id="encryptedResult"></Center>
       
-      <Flex mx={10} justify="space-around" mt={20}>
+      <Flex mx={10} justify="space-around" visibility={"hidden"} id="Vigenere" opacity={0} h={0}>
         
-        <Center position={"relative"} width={"100%"}  id="Vigenere" opacity={0}>
+        <Center position={"relative"} width={"100%"}>
           
           <Flex h={0}>
             <Grid templateRows="repeat(26, 24px)" templateColumns="repeat(1, 28px)" id="leftgrid"  mr={5}></Grid>
             <Box>
-              <Grid templateColumns="repeat(26, 28px)"  templateRows="repeat(1, 26px)" id="topgrid" position="absolute" top={"-50px"}></Grid>
+              <Grid templateColumns="repeat(26, 28px)"  templateRows="repeat(1, 26px)" id="topgrid" position="absolute"></Grid>
               <Grid justify={"center"} templateRows="repeat(26, 24px)" templateColumns="repeat(26, 28px)" id="grid"></Grid>
             </Box>
           </Flex>
           
           </Center>
-          <Box>
+          <Center w={"90vw"}>
             <Input placeholder='Enter Key' id="vigenereKey"/>
-            <Input placeholder='What do you want to encrypt?' id="encryptVal"/>
-            <Button colorScheme='blue' id="encryptBtn" onClick={encrypt}>Encrypt</Button>
-          </Box> 
+            <Input placeholder='What do you want to encrypt?' id="encryptValVigenere"/>
+            <Button colorScheme='green' onClick={encrypt}>Encrypt</Button>
+          </Center> 
         </Flex>
     </>
   );
@@ -172,31 +177,34 @@ function changeCipher(){
       return;
     }
   }
-  vigenereHide();
-  caesarHide();
 }
 
 function caesarStart(){
+  document.getElementById("Caesar").style.visibility= 'visible';
   anime({
     targets: '#Caesar',
     translateY: 10,
     opacity: 1,
     height: "100%",
-    easing: 'easeInOutQuad'
+    easing: 'easeInOutQuad',
+    visibility: "visible"
   });
 };
 
 function caesarHide(){
+
   anime({
     targets: "#Caesar",
     translateY: -10,
     opacity: 0,
     height: 0,
-    easing:"easeInOutQuad"
-  })
+    easing:"easeInOutQuad",
+    visibility: "hidden"
+  }).finished.then(document.getElementById("Caesar").style.visibility= 'hidden')
 }
 
 function vigenereStart(){
+  document.getElementById("Vigenere").style.visibility= 'visible';
   anime({
     targets: "#Vigenere",
     translateY: 10,
@@ -207,40 +215,40 @@ function vigenereStart(){
 }
 
 function vigenereHide(){
+  
   anime({
     targets: "#Vigenere",
     translateY: -10,
     opacity: 0,
     height: 0,
-    easing: "easeInOutQuad"
-  })
+    easing: "easeInOutQuad",
+    display: "none"
+  }).finished.then(document.getElementById("Vigenere").style.visibility= 'hidden')
 }
 
 //Calls the correct encryption cipher
 function encrypt(){
   const cipher = document.getElementById("cipher").value;
-  toEncrypt = document.getElementById("encryptVal").value;
 
-  addText();
-
+  let text="";
   if (cipher=="Caesar Cipher"){
-    /*
-    if (currCipher!="Caesar Cipher"){
-      caesarStart();
-    }*/
+    text=document.getElementById("encryptValCaesar").value;
+    addText(text);
 
     currCipher="Caesar Cipher";
-    caesarCipher(toEncrypt);
+    caesarCipher(text);
   }else if (cipher=="Vigenere"){
+    text=document.getElementById("encryptValCaesar").value;
+    addText(text);
+
     currCipher = "Vigenere";
-    vigenereCipher(toEncrypt);
+    vigenereCipher(text);
   }
 }
 
 
 //Adds the text that is going to be encrypted onto the screen
-function addText(){
-  const text = document.getElementById("encryptVal").value;
+function addText(text){
   
   if (text.length<=0){
     return;
