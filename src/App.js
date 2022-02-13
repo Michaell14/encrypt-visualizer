@@ -125,7 +125,7 @@ function App() {
               </NumberInput>
             </Flex>
 
-            <Button colorScheme='blue' w={"80px"} onClick={encrypt} top={5}>Encrypt</Button>
+            <Button colorScheme='blue' w={"80px"} id={"caesarBtn"} onClick={encrypt} top={5} disabled={false}>Encrypt</Button>
           </Flex> 
       </Box>
       <Center id="encryptedResult" w={"100%"} position={"absolute"}></Center>
@@ -145,7 +145,7 @@ function App() {
         <Flex w={"20vw"} direction="column">
           <Input placeholder='Enter Key' id="vigenereKey"/>
           <Input placeholder='What do you want to encrypt?' id="encryptValVigenere"/>
-          <Button colorScheme='blue' onClick={encrypt}>Encrypt</Button>
+          <Button colorScheme='blue' id={"vigenereBtn"} onClick={encrypt}>Encrypt</Button>
         </Flex> 
       </Flex>
     </>

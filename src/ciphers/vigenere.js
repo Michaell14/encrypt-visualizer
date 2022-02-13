@@ -6,10 +6,11 @@ let toEncrypt="";
 const alphabet="abcdefghijklmnopqrstuvwxyz";
 let finalEncrypted="";
 let underline=true;
+/*
 var horizontalColor = anime.timeline({
 })
 var verticalColor = anime.timeline({
-})
+})*/
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -27,7 +28,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         createNode(i, "leftgridletter", leftgrid);
         offset++;
     }
-
 })
 
 
@@ -42,7 +42,8 @@ function createNode(index, classname, parent){
 let key="";
 
 export function vigenereCipher(encrypt){
-    resetGrid();
+    //resetGrid();
+    document.getElementById("vigenereBtn").disabled=true;
     clearText();
     toEncrypt=encrypt;
     key= document.getElementById("vigenereKey").value;
@@ -51,15 +52,15 @@ export function vigenereCipher(encrypt){
     encryptText();
     animateHighlight();
 }
-
+/*
 function resetGrid(){
+    
     verticalColor.restart()
     horizontalColor.restart()
-    anime.remove(".grid topgrid leftgrid")
+    anime.remove(".grid .topgrid .leftgrid")
+    anime.remove(".grid .topgrid .leftgrid");
     
-    anime.remove(".grid topgrid leftgrid");
-    
-}
+}*/
 
 function encryptText(){
     
@@ -68,7 +69,7 @@ function encryptText(){
         const index1=alphabet.indexOf(toEncrypt.substring(i, i+1));
         const index2=alphabet.indexOf(key.substring(i%key.length, (i%key.length)+1));
         const newIndex = index1*26 + index2;
-       
+        console.log(grid.children[newIndex].innerHTML);
         finalEncrypted +=grid.children[newIndex].innerHTML;
         
         
@@ -109,9 +110,12 @@ function animateHighlight(){
     const leftAlphabet = document.getElementById("leftgrid");
     const topAlphabet=document.getElementById("topgrid");
     
-    horizontalColor = anime.timeline({
+    var horizontalColor = anime.timeline({
+       complete: function(anim){{
+           document.getElementById("vigenereBtn").disabled=false;
+       }}
     })
-    verticalColor = anime.timeline({
+    var verticalColor = anime.timeline({
     })
 
 

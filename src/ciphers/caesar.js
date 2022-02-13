@@ -11,9 +11,10 @@ let underline=true;
 
 //****CAESAR CIPHER****
 export function caesarCipher(encrypt){
-
+  document.getElementById("caesarBtn").disabled=true;
   toEncrypt=encrypt;
   clearText();
+
   //Creates a new alphabet
   shift = document.getElementById("step").value;
   if (shift<0){
@@ -27,12 +28,13 @@ export function caesarCipher(encrypt){
 
 //Calculates the encrypted text
 function getEncryptedText(){
-    const newAlphabet= alphabet.substring(alphabet.length-shift) + alphabet.substring(shift, alphabet.length-shift);
+    const newAlphabet= alphabet.substring(alphabet.length-shift) + alphabet.substring(0, alphabet.length-shift);
   
     let encryptedText="";
     for (let i=0; i<toEncrypt.length; i++){
-      if (toEncrypt[i]==" "){
-        encryptedText+=" ";
+      
+      if (!toEncrypt[i].match(/[a-z]/i)){
+        encryptedText+=toEncrypt[i];
       }
   
        let index = alphabet.indexOf(toEncrypt[i].toLowerCase());
@@ -41,8 +43,12 @@ function getEncryptedText(){
        if (toEncrypt[i]==toEncrypt[i].toUpperCase()){
          toAdd=toAdd.toUpperCase();
        }
+       console.log(toAdd);
        encryptedText+=toAdd;
     }
+    console.log(encryptedText);
+    console.log(toEncrypt);
+    console.log(newAlphabet)
     return encryptedText;
   }
 
@@ -82,9 +88,8 @@ function clearText(){
 
 //Animates the arrow and the underline
 function animateArrowAndUnderline(){
-  underline=false;
+  
   setTimeout(() => {  
-    underline=true;
     underlineText(0);
     moveArrow(0);
   }, 2300); 
@@ -109,7 +114,6 @@ function moveArrow(i){
 
     const toAdd=document.createElement("p");
     toAdd.className = "finalEncrypted";
-
     toAdd.append(document.createTextNode(finalEncrypted.substring(i, i+1)));
 
     document.getElementById("encryptedResult").appendChild(toAdd);
@@ -120,16 +124,17 @@ function moveArrow(i){
 //Underlines each letter in order
 function underlineText(index){
   if (index>=toEncrypt.length){
+    document.getElementById("caesarBtn").disabled=false;
     return;
   }
   
-  document.getElementById(index).style.textDecoration = "underline 4px red dotted";
-  
+  document.getElementById(index).style.textDecoration = "underline 4px red";
+ 
   setTimeout(() => {  
     document.getElementById(index).style.textDecoration = "none"; 
-    if (underline){
-      underlineText(index+1);
-      moveArrow(index+1);
-    }
+    
+    underlineText(index+1);
+    moveArrow(index+1);
+    
   }, 1500);
 }
