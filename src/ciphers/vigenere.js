@@ -111,11 +111,14 @@ function animateHighlight(){
     const topAlphabet=document.getElementById("topgrid");
     
     var horizontalColor = anime.timeline({
-       complete: function(anim){{
+       
+        complete: function(anim){{
            document.getElementById("vigenereBtn").disabled=false;
-       }}
+       }},
+       
     })
     var verticalColor = anime.timeline({
+        duration: 1000
     })
 
 
@@ -134,8 +137,8 @@ function animateHighlight(){
         for (let i=0; i<index1; i++){
             verticalArr.push(grid.children[index2 + i*26]);
         }
-        const upperLimit = lcm(horizontalArr.length, verticalArr.length);
-
+        //const upperLimit = lcm(horizontalArr.length, verticalArr.length);
+        const upperLimit = 2327.9256
         horizontalColor.add({
             targets: horizontalArr,
            
@@ -150,7 +153,7 @@ function animateHighlight(){
         verticalColor.add({
             targets: verticalArr,
            /* delay: anime.stagger(2000/verticalArr.length),*/
-           delay: anime.stagger(upperLimit/verticalArr.length),
+            delay: anime.stagger(upperLimit/verticalArr.length),
             keyframes: [
                 {backgroundColor: "#E1341E"},
                 {backgroundColor: "#1A202C"}

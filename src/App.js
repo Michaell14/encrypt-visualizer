@@ -19,6 +19,7 @@ function App() {
   const arrowColor = useColorModeValue("#2B6CB0", "#3182CE")
   const arrowBorderColor = useColorModeValue("transparent transparent #2B6CB0 transparent", "transparent transparent #3182CE transparent")
   const gridBGColor = useColorModeValue("#CDDEFF", "#2A4365")
+  const textColor = useColorModeValue("#000000", "#FFFFFF")
   return (
     <>
       <header>
@@ -35,7 +36,7 @@ function App() {
         </Select>
 
       </Flex>
-      <Flex w={"100%"} id="maintext" justify={"center"}>
+      <Flex w={"100%"} id="maintext" justify={"center"} sx={{ 'p': { color: textColor} }}>
         
         <Text fontSize={"5xl"}>E</Text>
         <Text fontSize={"5xl"}>n</Text>
