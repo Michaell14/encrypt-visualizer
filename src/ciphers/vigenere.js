@@ -1,6 +1,6 @@
-import { ColorModeProvider } from '@chakra-ui/react';
+
 import anime from 'animejs/lib/anime.es.js';
-import { animationControls } from 'framer-motion';
+import { colorMode } from "@chakra-ui/react";
 
 let toEncrypt="";
 const alphabet="abcdefghijklmnopqrstuvwxyz";
@@ -10,6 +10,7 @@ var horizontalColor = anime.timeline({
 })
 var verticalColor = anime.timeline({
 })
+
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const grid = document.getElementById("grid");
@@ -35,6 +36,7 @@ function createNode(index, classname, parent){
     const toAdd=document.createElement("p");
     toAdd.appendChild(document.createTextNode(alphabet.substring(index, index+1)));
     toAdd.classList.add(classname);
+    
     parent.appendChild(toAdd);
 }
 let key="";

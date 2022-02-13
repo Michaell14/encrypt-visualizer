@@ -1,16 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 import anime from 'animejs/lib/anime.es.js';
-import { Center, Button, Text, Input, Flex, Select, Grid, GridItem, Box } from "@chakra-ui/react";
-import {
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-} from '@chakra-ui/react'
-
-import { ChevronDownIcon  } from '@chakra-ui/icons'
+import { Center, Button, Text, Input, Flex, Select, Grid, GridItem, Box, useColorMode,useColorModeValue } from "@chakra-ui/react";
+import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from '@chakra-ui/react'
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { animationControls } from 'framer-motion';
 
 import {caesarCipher} from "./ciphers/caesar"
@@ -18,12 +11,22 @@ import { vigenereCipher } from "./ciphers/vigenere"
 
 let toEncrypt="";
 const alphabet="abcdefghijklmnopqrstuvwxyz";
-let finalEncrypted="";
 let currCipher="";
 
 function App() {
+  const { colorMode, toggleColorMode } = useColorMode()
+
+  const arrowColor = useColorModeValue("#2B6CB0", "#3182CE")
+  const arrowBorderColor = useColorModeValue("transparent transparent #2B6CB0 transparent", "transparent transparent #3182CE transparent")
+  const gridBGColor = useColorModeValue("#CDDEFF", "#2A4365")
   return (
     <>
+      <header>
+        <Button onClick={toggleColorMode}>
+          {colorMode === 'light' ? <MoonIcon/>: <SunIcon/>}
+        </Button>
+      </header>
+
       <Flex mt={10} justify={"center"}>
       
         <Select placeholder='Select Cipher' id="cipher" onChange={changeCipher} w={"150px"}>
@@ -50,8 +53,8 @@ function App() {
 
 
       <Box opacity={0} height={0} id="Caesar" position="absolute" mx={"auto"} w={"90vw"}>
-        <Flex w={"100%"} className={"alpha"} position={"relative"} top={"60px"} justify={"center"}>
-          <div id="double-arrow"></div>
+        <Flex w={"100%"} className={"alpha"} position={"relative"} top={"60px"} justify={"center"}  sx={{ '#double-arrow:after, #double-arrow:before': { borderColor: arrowBorderColor} }}>
+          <Box bg={arrowColor} id="double-arrow"></Box>
           <Text className={"oldAlphaLetter"}>a</Text>
           <Text className={"oldAlphaLetter"}>b</Text>
           <Text className={"oldAlphaLetter"}>c</Text>
@@ -122,7 +125,7 @@ function App() {
               </NumberInput>
             </Flex>
 
-            <Button colorScheme='green' w={"80px"} onClick={encrypt} top={5}>Encrypt</Button>
+            <Button colorScheme='blue' w={"80px"} onClick={encrypt} top={5}>Encrypt</Button>
           </Flex> 
       </Box>
       <Center id="encryptedResult" w={"100%"} position={"absolute"}></Center>
@@ -130,11 +133,11 @@ function App() {
       <Flex mx={10} justify="space-around" visibility={"hidden"} id="Vigenere" position={"relative"} opacity={0} mt={"120px"}>
         
           
-        <Flex h={0}>
+        <Flex h={0} sx={{ '#leftgrid p:nth-child(odd)': { bg: gridBGColor} }}>
           <Grid templateRows="repeat(26, 24px)" templateColumns="repeat(1, 28px)" id="leftgrid"  mr={5}></Grid>
-          <Box>
+          <Box sx={{ '#grid p:nth-child(odd), #topgrid p:nth-child(odd)': { bg: gridBGColor} }}>
             <Grid templateColumns="repeat(26, 28px)"  templateRows="repeat(1, 26px)" id="topgrid" bottom={"140px"} position="absolute"></Grid>
-            <Grid justify={"center"} templateRows="repeat(26, 24px)" templateColumns="repeat(26, 28px)" id="grid"></Grid>
+            <Grid justify={"center"} templateRows="repeat(26, 24px)" templateColumns="repeat(26, 28px)" id="grid" ></Grid>
           </Box>
         </Flex>
 
@@ -142,7 +145,7 @@ function App() {
         <Flex w={"20vw"} direction="column">
           <Input placeholder='Enter Key' id="vigenereKey"/>
           <Input placeholder='What do you want to encrypt?' id="encryptValVigenere"/>
-          <Button colorScheme='green' onClick={encrypt}>Encrypt</Button>
+          <Button colorScheme='blue' onClick={encrypt}>Encrypt</Button>
         </Flex> 
       </Flex>
     </>
@@ -179,6 +182,8 @@ function changeCipher(){
       return;
     }
   }
+  caesarHide();
+  vigenereHide();
 }
 
 function caesarStart(){

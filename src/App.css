@@ -37,12 +37,13 @@ p{
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid white;
+    border: .6px solid whitesmoke;
+    
 }
-
+/*
 #grid p:nth-child(odd), #leftgrid p:nth-child(odd), #topgrid p:nth-child(odd){
     background-color: #424353;
-}
+}*/
 
 /* --------------------------------------------  */
 
@@ -50,7 +51,6 @@ p{
 #double-arrow {
     width: 5px;
     height: 50px;
-    background-color: white;
     opacity: .2;
     position: absolute;
     margin-left: 10px;
@@ -65,7 +65,7 @@ p{
     border-style: solid;
     transform: translate(-40%, -50%);
     border-width: 0 10px 20px 10px;
-    border-color: transparent transparent white transparent;
+    /*border-color: transparent transparent white transparent;*/
 }
 #double-arrow:before {
     content: '';
@@ -75,5 +75,11 @@ p{
     border-style: solid;
     transform: rotate(180deg);
     border-width: 0 10px 20px 10px;
-    border-color: transparent transparent white transparent;
+    /*border-color: transparent transparent white transparent;*/
+}
+
+header{
+    right: 30px;
+    position: absolute;
+    top: -10px;
 }
