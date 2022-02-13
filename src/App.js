@@ -12,7 +12,6 @@ import { vigenereCipher } from "./ciphers/vigenere"
 let toEncrypt="";
 const alphabet="abcdefghijklmnopqrstuvwxyz";
 let currCipher="";
-
 function App() {
   const { colorMode, toggleColorMode } = useColorMode()
 
@@ -20,6 +19,8 @@ function App() {
   const arrowBorderColor = useColorModeValue("transparent transparent #2B6CB0 transparent", "transparent transparent #3182CE transparent")
   const gridBGColor = useColorModeValue("#CDDEFF", "#2A4365")
   const textColor = useColorModeValue("#000000", "#FFFFFF")
+  const gridBackgroundColor = useColorModeValue("#6335CA", "#9CCA35")
+
   return (
     <>
       <header>
@@ -136,7 +137,7 @@ function App() {
           
         <Flex h={0} sx={{ '#leftgrid p:nth-child(odd)': { bg: gridBGColor} }}>
           <Grid templateRows="repeat(26, 24px)" templateColumns="repeat(1, 28px)" id="leftgrid"  mr={5}></Grid>
-          <Box sx={{ '#grid p:nth-child(odd), #topgrid p:nth-child(odd)': { bg: gridBGColor} }}>
+          <Box sx={{ '#grid p:nth-of-type(odd), #topgrid p:nth-of-type(odd)': { bg: gridBGColor} }}>
             <Grid templateColumns="repeat(26, 28px)"  templateRows="repeat(1, 26px)" id="topgrid" bottom={"140px"} position="absolute"></Grid>
             <Grid justify={"center"} templateRows="repeat(26, 24px)" templateColumns="repeat(26, 28px)" id="grid" ></Grid>
           </Box>

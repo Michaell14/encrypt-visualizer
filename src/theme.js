@@ -13,18 +13,6 @@ const config = {
 }
 
 // 3. extend the theme
-const theme = extendTheme({
-  config
-/*
-  styles: {
-    global: {
-      // styles for the `body`
-      div: {
-        bg: 'green.700',
-      },
-    },
-  },*/
-
-})
+const theme = extendTheme({ config })
 
 export default theme

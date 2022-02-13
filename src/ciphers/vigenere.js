@@ -1,17 +1,8 @@
-
 import anime from 'animejs/lib/anime.es.js';
-import { colorMode } from "@chakra-ui/react";
 
 let toEncrypt="";
 const alphabet="abcdefghijklmnopqrstuvwxyz";
 let finalEncrypted="";
-let underline=true;
-/*
-var horizontalColor = anime.timeline({
-})
-var verticalColor = anime.timeline({
-})*/
-
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const grid = document.getElementById("grid");
@@ -42,7 +33,6 @@ function createNode(index, classname, parent){
 let key="";
 
 export function vigenereCipher(encrypt){
-    //resetGrid();
     document.getElementById("vigenereBtn").disabled=true;
     clearText();
     toEncrypt=encrypt;
@@ -52,56 +42,24 @@ export function vigenereCipher(encrypt){
     encryptText();
     animateHighlight();
 }
-/*
-function resetGrid(){
-    
-    verticalColor.restart()
-    horizontalColor.restart()
-    anime.remove(".grid .topgrid .leftgrid")
-    anime.remove(".grid .topgrid .leftgrid");
-    
-}*/
 
 function encryptText(){
     
     const grid =document.getElementById("grid");
+    finalEncrypted="";
     for (let i=0; i<toEncrypt.length; i++){
         const index1=alphabet.indexOf(toEncrypt.substring(i, i+1));
         const index2=alphabet.indexOf(key.substring(i%key.length, (i%key.length)+1));
+        console.log(key.substring(i%key.length, (i%key.length)+1));
+
         const newIndex = index1*26 + index2;
-        console.log(grid.children[newIndex].innerHTML);
+
+        console.log(newIndex);
         finalEncrypted +=grid.children[newIndex].innerHTML;
         
         
     }
     animateUnderline();
-}
-
-//Finds the greatest common denominator between two numbers
-function gcd(num1, num2){
-  
-    //Loop till both numbers are not equal
-    while(num1 != num2){
-      
-      //check if num1 > num2
-      if(num1 > num2){
-        //Subtract num2 from num1
-        num1 = num1 - num2;
-      }else{
-        //Subtract num1 from num2
-        num2 = num2 - num1;
-      }
-    }
-    
-    return num2;
-}
-
-//Finds the least common multiple of two numbers
-function lcm(num1, num2){
-    let gcdVal = gcd(num1, num2);
-    let toReturn = (num1*num2)/gcdVal;
-
-    return Math.floor((2000-toReturn)/toReturn) * (toReturn+1);
 }
 
 
@@ -111,14 +69,18 @@ function animateHighlight(){
     const topAlphabet=document.getElementById("topgrid");
     
     var horizontalColor = anime.timeline({
-       
-        complete: function(anim){{
-           document.getElementById("vigenereBtn").disabled=false;
-       }},
+        duration: 3000
        
     })
     var verticalColor = anime.timeline({
-        duration: 1000
+        duration: 3000
+    })
+
+    var greenColor = anime.timeline({
+        duration: 3000,
+        complete: function(anim){{
+            document.getElementById("vigenereBtn").disabled=false;
+        }},
     })
 
 
@@ -138,25 +100,34 @@ function animateHighlight(){
             verticalArr.push(grid.children[index2 + i*26]);
         }
         //const upperLimit = lcm(horizontalArr.length, verticalArr.length);
-        const upperLimit = 2327.9256
+        const upperLimit = 2677.11444
         horizontalColor.add({
             targets: horizontalArr,
            
-            delay: anime.stagger(upperLimit/horizontalArr.length),
-            keyframes: [
-                {backgroundColor: "#E1341E"},
-                {backgroundColor: "#1A202C"}
-              ],
+            delay: anime.stagger(upperLimit/(horizontalArr.length-1)),
             
+            keyframes: [
+                {backgroundColor: "#C03F4A"},
+                {backgroundColor: "rgba(192, 63, 74, 0)"}
+              ],
         })
 
         verticalColor.add({
             targets: verticalArr,
-           /* delay: anime.stagger(2000/verticalArr.length),*/
-            delay: anime.stagger(upperLimit/verticalArr.length),
+            delay: anime.stagger(upperLimit/(verticalArr.length-1)),
+            
             keyframes: [
-                {backgroundColor: "#E1341E"},
-                {backgroundColor: "#1A202C"}
+                {backgroundColor: "#C03F4A"},
+                {backgroundColor: "rgba(192, 63, 74, 0)"}
+              ],
+        })
+
+       greenColor.add({
+            targets: grid.children[index2 + index1*26],
+            delay: upperLimit,
+            keyframes: [
+                {backgroundColor: "#33CC4C"},
+                {backgroundColor: "rgba(51, 204, 76, 0)"}
               ],
         })
     }   
@@ -164,12 +135,10 @@ function animateHighlight(){
 
 
 function animateUnderline(){
-    underline=false;
     setTimeout(() => {  
-        underline=true;
         underlineText(0);
         addText(0);
-      }, 2300); 
+      }, 3000); 
 }
 
 //Underlines each letter in order
@@ -182,10 +151,9 @@ function underlineText(index){
 
     setTimeout(() => {  
         document.getElementById(index).style.textDecoration = "none"; 
-        if (underline){
         underlineText(index+1);
-        }
-    }, 1500);
+        
+    }, 5677.11444);
 }
 
 function addText(index){   
@@ -198,10 +166,9 @@ function addText(index){
     toAdd.appendChild(document.createTextNode(finalEncrypted.substring(index, index+1)));
     parent.appendChild(toAdd);
     setTimeout(() => {
-        if (underline){
-            addText(index+1);
-        }
-    }, 1500);
+        addText(index+1);
+        
+    }, 5677.11444);
 }
 
 
