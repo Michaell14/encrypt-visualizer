@@ -5,9 +5,6 @@ let finalEncrypted="";
 let shift=0;
 const alphabet="abcdefghijklmnopqrstuvwxyz";
 let toEncrypt="";
-let underline=true;
-
-
 
 //****CAESAR CIPHER****
 export function caesarCipher(encrypt){

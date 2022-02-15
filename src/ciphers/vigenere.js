@@ -21,8 +21,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 })
 
-
-
 function createNode(index, classname, parent){
     const toAdd=document.createElement("p");
     toAdd.appendChild(document.createTextNode(alphabet.substring(index, index+1)));

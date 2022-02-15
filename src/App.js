@@ -1,16 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
 import anime from 'animejs/lib/anime.es.js';
 import { Center, Button, Text, Input, Flex, Select, Grid, GridItem, Box, useColorMode,useColorModeValue } from "@chakra-ui/react";
 import { NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper } from '@chakra-ui/react'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
-import { animationControls } from 'framer-motion';
 
 import {caesarCipher} from "./ciphers/caesar"
 import { vigenereCipher } from "./ciphers/vigenere"
 
-let toEncrypt="";
-const alphabet="abcdefghijklmnopqrstuvwxyz";
 let currCipher="";
 function App() {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -19,7 +15,6 @@ function App() {
   const arrowBorderColor = useColorModeValue("transparent transparent #2B6CB0 transparent", "transparent transparent #3182CE transparent")
   const gridBGColor = useColorModeValue("#CDDEFF", "#2A4365")
   const textColor = useColorModeValue("#000000", "#FFFFFF")
-  const gridBackgroundColor = useColorModeValue("#6335CA", "#9CCA35")
 
   return (
     <>
@@ -37,6 +32,8 @@ function App() {
         </Select>
 
       </Flex>
+
+  
       <Flex w={"100%"} id="maintext" justify={"center"} sx={{ 'p': { color: textColor} }}>
         
         <Text fontSize={"5xl"}>E</Text>
@@ -52,10 +49,28 @@ function App() {
         <Text fontSize={"5xl"}>e</Text>
       </Flex>
 
+      <Center id="encryptedResult" w={"100%"} position={"absolute"}></Center>
 
+      <Box my={"5%"} mx={'auto'} w={"800px"} id={"info"} opacity={0}>
+      <Center justifyContent="space-around">
+          
+          <Text fontSize={"lg"} letterSpacing={0} w={"350px"} lineHeight={"30px"}>Learn how to encrypt messages through visualizations! This tool allows you to visualize 
+            multiple encryption ciphers to better understand how they work. Try it out and see how it works. 
+          </Text>
+          <img src={"/proudcoder.svg"} alt="coder" width={"35%"} height={"35%"}></img>
+      </Center>
+      <Center justifyContent="space-between" lineHeight={"30px"} mt={"8%"}>
+        <img src={"knowledge.svg"} alt={"knowledge"} width={"28%"} height={"28%"}/>
+        <Text fontSize={"lg"} letterSpacing={0} w={"350px"}>What is a cipher? A cipher is an algorithm that is able to encrypt or decrypt a message based on a 
+            certain set of steps. Encrypted messages allow people to communicate in secret, and depending on the type of cipher,
+            can be extremely difficult to decrypt by others.
+        </Text>
+        
+      </Center>
+      </Box>
 
-      <Box opacity={0} height={0} id="Caesar" position="absolute" mx={"auto"} w={"90vw"}>
-        <Flex w={"100%"} className={"alpha"} position={"relative"} top={"60px"} justify={"center"}  sx={{ '#double-arrow:after, #double-arrow:before': { borderColor: arrowBorderColor} }}>
+      <Box opacity={0} h={0} id="Caesar" position="absolute" mx={"auto"} w={"90vw"}>
+        <Flex w={"98vw"} className={"alpha"} position={"relative"} top={"60px"} justify={"center"}  sx={{ '#double-arrow:after, #double-arrow:before': { borderColor: arrowBorderColor} }}>
           <Box bg={arrowColor} id="double-arrow"></Box>
           <Text className={"oldAlphaLetter"}>a</Text>
           <Text className={"oldAlphaLetter"}>b</Text>
@@ -85,7 +100,7 @@ function App() {
           <Text className={"oldAlphaLetter"}>z</Text>
 
         </Flex>
-        <Flex w={"100%"} id={"alpha"} className={"alpha"} position={"relative"} top={"-10px"} justify={"center"}>
+        <Flex w={"98vw"} id={"alpha"} className={"alpha"} position={"relative"} top={"-10px"} justify={"center"}>
           <Text align={"center"} className={"alphaLetter"} id={"a"}>a</Text>
           <Text align={"center"} className={"alphaLetter"} id={"b"}>b</Text>
           <Text align={"center"} className={"alphaLetter"} id={"c"}>c</Text>
@@ -114,7 +129,6 @@ function App() {
           <Text align={"center"} className={"alphaLetter"} id={"z"}>z</Text>
         </Flex>
         <Flex mt={"150px"} w={"100%"} direction={"column"} align={"center"}>
-            
 
             <Flex direction={"row"}>
               <Input placeholder='What do you want to encrypt?' id="encryptValCaesar" w={"600px"} maxW={"600px"}/>
@@ -130,13 +144,12 @@ function App() {
             <Button colorScheme='blue' w={"80px"} id={"caesarBtn"} onClick={encrypt} top={5} disabled={false}>Encrypt</Button>
           </Flex> 
       </Box>
-      <Center id="encryptedResult" w={"100%"} position={"absolute"}></Center>
+      
       
       <Flex mx={10} justify="space-around" visibility={"hidden"} id="Vigenere" position={"relative"} opacity={0} mt={"120px"}>
-        
           
         <Flex h={0} sx={{ '#leftgrid p:nth-child(odd)': { bg: gridBGColor} }}>
-          <Grid templateRows="repeat(26, 24px)" templateColumns="repeat(1, 28px)" id="leftgrid"  mr={5}></Grid>
+          <Grid templateRows="repeat(26, 24px)" templateColumns="repeat(1, 28px)" id="leftgrid" mr={5}></Grid>
           <Box sx={{ '#grid p:nth-of-type(odd), #topgrid p:nth-of-type(odd)': { bg: gridBGColor} }}>
             <Grid templateColumns="repeat(26, 28px)"  templateRows="repeat(1, 26px)" id="topgrid" bottom={"140px"} position="absolute"></Grid>
             <Grid justify={"center"} templateRows="repeat(26, 24px)" templateColumns="repeat(26, 28px)" id="grid" ></Grid>
@@ -150,6 +163,7 @@ function App() {
           <Button colorScheme='blue' id={"vigenereBtn"} onClick={encrypt}>Encrypt</Button>
         </Flex> 
       </Flex>
+      
     </>
   );
 }
@@ -163,6 +177,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
   for (let i=0; i<oldLetters.length; i++){
     xLocations.push(oldLetters[i].getBoundingClientRect().left);
   }
+
+  anime({
+    targets: "#info",
+    translateY: -25,
+    duration: 1200,
+    easing: "easeInOutQuad",
+    opacity: 1,
+  })
 })
 
 export { xLocations };
@@ -171,69 +193,72 @@ function changeCipher(){
   const val = document.getElementById("cipher").value;
   if (val=="Caesar Cipher"){
     if (currCipher!="Caesar Cipher"){
-      vigenereHide();
-      caesarStart();
+      vigenereHide("Vigenere");
+      hide("info")
+      show("Caesar");
       
       return;
     }
   }else if (val=="Vigenere"){
     if (currCipher!="Vigenere"){
-      caesarHide();
-      vigenereStart();
+      
+      hide("info");
+      hide("Caesar");
+      vigenereShow("Vigenere");
       
       return;
     }
   }
-  caesarHide();
-  vigenereHide();
+  vigenereHide("Vigenere");
+  hide("Caesar");
+  show('info');
 }
 
-function caesarStart(){
-  document.getElementById("Caesar").style.visibility= 'visible';
+function show(id){
+  //document.getElementById(id).style.visibility= 'visible';
+  document.getElementById(id).style.display="block";
   anime({
-    targets: '#Caesar',
+    targets: "#" + id,
     translateY: 10,
     opacity: 1,
     height: "100%",
-    easing: 'easeInOutQuad',
-    visibility: "visible"
+    easing: 'easeInOutQuad'
   });
-};
-
-function caesarHide(){
-
-  anime({
-    targets: "#Caesar",
-    translateY: -10,
-    opacity: 0,
-    height: 0,
-    easing:"easeInOutQuad",
-    visibility: "hidden"
-  }).finished.then(document.getElementById("Caesar").style.visibility= 'hidden')
 }
 
-function vigenereStart(){
-  document.getElementById("Vigenere").style.visibility= 'visible';
+function vigenereShow(id){
+  document.getElementById(id).style.visibility="visible";
   anime({
-    targets: "#Vigenere",
+    targets: "#"+id,
     translateY: 10,
     opacity: 1,
     height: "100%",
-    easing: "easeInOutQuad"
+    easing: 'easeInOutQuad'
   })
 }
 
-function vigenereHide(){
-  
+function vigenereHide(id){
   anime({
-    targets: "#Vigenere",
+    targets: "#"+id,
     translateY: -10,
     opacity: 0,
     height: 0,
-    easing: "easeInOutQuad",
-    display: "none"
-  }).finished.then(document.getElementById("Vigenere").style.visibility= 'hidden')
+    easing: 'easeInOutQuad',
+    display: "none",
+  }).finished.then(document.getElementById(id).style.visibility= 'hidden')
 }
+
+
+function hide(id){
+  anime({
+    targets: "#"+id,
+    translateY: -10,
+    opacity: 0,
+    height: 0,
+    easing:"easeInOutQuad"
+  }).finished.then(document.getElementById(id).style.display= 'none')
+}
+
 
 //Calls the correct encryption cipher
 function encrypt(){
